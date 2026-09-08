@@ -7,9 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.0.0] - 2026-09-09
 
-> A tracker declares its own taxonomy in YAML — hierarchy levels, facets, and how to
-> migrate between versions of a definition — instead of having that shape hardcoded in
-> schema. Adding a domain is a file, not a fork.
+> A tracker declares its own taxonomy in YAML instead of having it hardcoded in schema — adding a domain is a file, not a fork.
+>
+> Hierarchy levels, shared facet vocabularies, and declared migration paths between
+> versions of a definition. The engine ships no domain vocabulary of its own.
 
 ### Added
 
