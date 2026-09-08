@@ -1,0 +1,13 @@
+# A league sport with a flat season/week shape.
+#
+# The shallow end of the structural range, and the shape the legacy tracker
+# baked into category names one row at a time: NFL 2013, NFL 2014, NFL 2015...
+content_type: nfl_game
+label: NFL Game
+version: 1
+
+levels:
+  - season: { label: Season, type: year }
+  - week: { label: Week, type: integer, range: [1, 22] }
+
+facets: [resolution, source, codec, subtitles]

@@ -1,0 +1,80 @@
+{
+    "name": "marque/taxonomy",
+    "description": "Declarative content-type engine for Marque \u2014 a tracker's taxonomy declared in YAML rather than hardcoded in schema",
+    "type": "library",
+    "license": "MIT",
+    "keywords": [
+        "taxonomy",
+        "categories",
+        "facets",
+        "content-types",
+        "laravel"
+    ],
+    "authors": [
+        {
+            "name": "Letter Of Marque Software",
+            "email": "dan@lom.software",
+            "homepage": "https://lom.software"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/letterofmarque/marque/issues",
+        "source": "https://github.com/letterofmarque/marque"
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../trove",
+            "options": {
+                "symlink": true
+            }
+        }
+    ],
+    "require": {
+        "php": "^8.3",
+        "marque/trove": "^4.0",
+        "illuminate/support": "^13.0",
+        "illuminate/database": "^13.0",
+        "symfony/yaml": "^7.0|^8.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^11.0",
+        "pestphp/pest": "^4.7",
+        "mockery/mockery": "^1.6",
+        "nunomaduro/pao": "^1.1",
+        "livewire/livewire": "^4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Marque\\Taxonomy\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Marque\\Taxonomy\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-main": "1.0.x-dev"
+        },
+        "laravel": {
+            "providers": [
+                "Marque\\Taxonomy\\TaxonomyServiceProvider"
+            ]
+        }
+    },
+    "scripts": {
+        "test": "pest"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "suggest": {
+        "livewire/livewire": "Required for the ClassifierForm upload component (^4.0)"
+    }
+}

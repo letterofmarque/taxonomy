@@ -1,0 +1,14 @@
+# The Spec's other worked example: "Cycling has stages and classifications."
+#
+# Its leaf is a stage, and it declares no `week` or `episode` at all — a
+# cycling uploader never sees them, which is what content-type scoping buys.
+content_type: cycling_stage
+label: Cycling Stage
+version: 1
+
+levels:
+  - season: { label: Season, type: year }
+  - race: { label: Race, type: string }
+  - stage: { label: Stage, type: integer, range: [1, 21] }
+
+facets: [resolution, source]

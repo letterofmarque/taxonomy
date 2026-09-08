@@ -1,0 +1,15 @@
+# The Spec's own worked example: "Cricket has innings and Test/ODI/T20."
+#
+# Deeper than NFL and differently shaped — format sits between season and the
+# leaf, and the leaf is an innings rather than a week. Declares `season`, which
+# NFL also declares: acceptance criterion 3 says those must not collide.
+content_type: cricket_match
+label: Cricket Match
+version: 1
+
+levels:
+  - season: { label: Season, type: year }
+  - format: { label: Format, type: string }
+  - innings: { label: Innings, type: integer, range: [1, 4] }
+
+facets: [resolution, source, subtitles]

@@ -1,0 +1,20 @@
+# Not a sport at all.
+#
+# Included deliberately: a fixture set made only of sports could hide domain
+# leakage in the engine, because everything would happen to share a vocabulary.
+# Acceptance criterion 8 says core knows what a season is in exactly the same
+# way it knows what an innings is — which is to say, not at all.
+#
+# `season` here means "the third season of a show", which has nothing to do with
+# NFL's "the 2006 season" beyond the word. That they coexist without colliding
+# is the point.
+content_type: tv_episode
+label: TV Episode
+version: 1
+
+levels:
+  - series: { label: Series, type: string }
+  - season: { label: Season, type: integer, range: [1, 99] }
+  - episode: { label: Episode, type: integer, range: [1, 999] }
+
+facets: [resolution, source, codec, subtitles, audio]
