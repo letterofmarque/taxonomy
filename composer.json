@@ -1,6 +1,6 @@
 {
     "name": "marque/taxonomy",
-    "description": "Declarative content-type engine for Marque \u2014 a tracker's taxonomy declared in YAML rather than hardcoded in schema",
+    "description": "Declarative content-type engine for Marque — a tracker's taxonomy declared in YAML rather than hardcoded in schema",
     "type": "library",
     "license": "MIT",
     "keywords": [
@@ -56,7 +56,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-main": "1.1.x-dev"
+            "dev-main": "1.0.x-dev"
         },
         "laravel": {
             "providers": [
