@@ -15,7 +15,10 @@ use Marque\Taxonomy\Livewire\TaxonomyAdmin;
 use Marque\Taxonomy\Models\Classification;
 use Marque\Taxonomy\Models\FacetValue;
 use Marque\Taxonomy\Services\Classifier;
+use Marque\Trove\Enums\Role;
 use Marque\Trove\Models\Torrent;
+use Marque\Trove\Registry\AdminScreen;
+use Marque\Trove\Registry\AdminScreenRegistry;
 
 class TaxonomyServiceProvider extends ServiceProvider
 {
@@ -63,6 +66,11 @@ class TaxonomyServiceProvider extends ServiceProvider
         if (class_exists(Livewire::class)) {
             Livewire::component('taxonomy-classifier-form', ClassifierForm::class);
             Livewire::component('taxonomy-admin', TaxonomyAdmin::class);
+
+            // Inside the same guard on purpose: the screen IS the Livewire
+            // component, so advertising it in an install without Livewire
+            // would offer a panel link to something that cannot render.
+            $this->registerAdminScreens();
         }
 
         if ($this->app->runningInConsole()) {
@@ -102,6 +110,34 @@ class TaxonomyServiceProvider extends ServiceProvider
      * components at compile time and a class_exists() guard around one still
      * throws.
      */
+    /**
+     * Declare taxonomy's admin screen.
+     *
+     * Until now this component shipped with no route and no nav entry — it
+     * existed and nothing could reach it, which is the concrete problem
+     * Spec #108 was written to solve.
+     *
+     * taxonomy binds no routes of its own, so unlike usarrs it declares a path
+     * and lets the panel route it. Registered against trove; **taxonomy must
+     * never depend on marque/skipper** — with no panel installed this entry is
+     * simply never read, which costs nothing.
+     */
+    protected function registerAdminScreens(): void
+    {
+        $this->app->make(AdminScreenRegistry::class)->register(new AdminScreen(
+            identifier: 'taxonomy',
+            label: 'Taxonomy',
+            component: 'taxonomy-admin',
+            path: 'admin/taxonomy',
+            // TaxonomyAdmin::authorizeAdmin() throws below this, so a lower
+            // floor here would offer a link that then throws.
+            minimumRole: Role::Admin,
+            icon: 'tag',
+            group: 'Content',
+            position: 20,
+        ));
+    }
+
     protected function registerTorrentRelations(): void
     {
         Torrent::resolveRelationUsing(

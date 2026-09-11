@@ -5,6 +5,29 @@ All notable changes to `marque/taxonomy` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] — 2026-09-11
+
+> The admin screen is now reachable — it registers itself, so installing the panel lists it automatically.
+
+### Added
+
+- **Registers `TaxonomyAdmin` with trove's `AdminScreenRegistry`.** The component
+  shipped in 1.0.0 with no route and no navigation entry — it existed and nothing
+  could reach it. Installing
+  [`marque/skipper`](https://github.com/letterofmarque/skipper) now puts
+  **Taxonomy** under *Content* at `/admin/taxonomy`, visible to admins.
+
+  The declared floor is `Role::Admin`, matching what `TaxonomyAdmin` already
+  enforces on mount and on every write.
+
+  Registration sits inside the existing `class_exists(Livewire::class)` guard:
+  the screen *is* the Livewire component, so an API-only install that classifies
+  without a frontend stack does not advertise a screen it cannot render.
+
+- taxonomy does **not** require or suggest skipper. With no panel installed the
+  registration is never read, and you can still mount
+  `<livewire:taxonomy-admin />` on a route of your own.
+
 ## [1.0.0] - 2026-09-09
 
 > A tracker declares its own taxonomy in YAML instead of having it hardcoded in schema — adding a domain is a file, not a fork.

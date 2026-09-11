@@ -1,7 +1,7 @@
 {{--
     Plain Blade, deliberately.
 
-    No components from marque/ise are used here. Spec #83 found that Blade
+    No components from marque/deck are used here. Spec #83 found that Blade
     resolves components at compile time, so a class_exists() guard around
     another package's component still throws wherever that package is absent.
     Taking a UI-kit dependency would make the engine uninstallable by an

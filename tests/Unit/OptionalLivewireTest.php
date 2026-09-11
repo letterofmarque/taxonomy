@@ -108,18 +108,18 @@ it('declares Livewire as a suggestion rather than a requirement', function () {
 
 it('takes no UI-kit dependency', function () {
     // Spec #83: Blade resolves components at compile time, so a class_exists
-    // guard around <x-ise::button> still throws where ise is absent. The
+    // guard around <x-deck::button> still throws where ise is absent. The
     // options are to own the markup or take a hard dependency — this package
     // owns its markup.
     $composer = json_decode(file_get_contents(__DIR__.'/../../composer.json'), true);
 
-    expect($composer['require'])->not->toHaveKey('marque/ise');
+    expect($composer['require'])->not->toHaveKey('marque/deck');
 
     $views = glob(__DIR__.'/../../resources/views/livewire/*.blade.php') ?: [];
 
     expect($views)->not->toBeEmpty();
 
     foreach ($views as $view) {
-        expect(file_get_contents($view))->not->toContain('<x-ise::');
+        expect(file_get_contents($view))->not->toContain('<x-deck::');
     }
 });

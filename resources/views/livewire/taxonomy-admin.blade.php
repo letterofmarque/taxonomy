@@ -1,6 +1,6 @@
 {{--
     Plain Blade, same reasoning as the upload form: no components from
-    marque/ise, because Blade resolves components at compile time and a
+    marque/deck, because Blade resolves components at compile time and a
     class_exists() guard around one still throws where that package is absent
     (Spec #83). Unstyled by design — publish with --tag=taxonomy-views and
     restyle.

@@ -18,7 +18,7 @@ abstract class TestCase extends BaseTestCase
      * Every dependency is listed explicitly: Laravel's package auto-discovery
      * does not run under Testbench, so a provider left out here is simply
      * absent. guise's suite broke exactly this way on a missing
-     * IseServiceProvider.
+     * DeckServiceProvider.
      */
     protected function getPackageProviders($app): array
     {

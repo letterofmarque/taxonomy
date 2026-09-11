@@ -245,6 +245,19 @@ come from the definition, and an admin who can only add values cannot produce ei
 failure modes described above. Structural change goes through the commands, which report
 what they will orphan before doing anything.
 
+### Reaching it
+
+Taxonomy registers the screen with `marque/trove`'s `AdminScreenRegistry`, so installing
+[`marque/skipper`](https://github.com/letterofmarque/skipper) — the admin panel — puts
+**Taxonomy** under *Content* in the panel automatically, at `/admin/taxonomy`, visible to
+admins.
+
+**Skipper is optional and taxonomy does not require it.** With no panel installed the
+registration is simply never read, and nothing else changes: mount
+`<livewire:taxonomy-admin />` on a route of your own and gate it however you like. The
+component authorises independently either way — it requires an admin on mount and on every
+write, rather than trusting whatever middleware the surrounding route happens to carry.
+
 ## Not in this package
 
 - **The browse and filter surface.** The query engine is here; `guise`/`disguise`
