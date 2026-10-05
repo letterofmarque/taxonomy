@@ -288,4 +288,4 @@ four, not merely claimed.
 
 ## Licence
 
-MIT, as declared in `composer.json`.
+MIT. See [LICENSE](LICENSE).
