@@ -5,10 +5,10 @@ tracker platform. A tracker declares its own shape in YAML — its hierarchy lev
 facets — instead of having that shape hardcoded in schema.
 
 ```
-  taxonomy-sport ─┐                              ┌─ upload form
-  taxonomy-tv    ─┼─→  content-type definition ─→┼─ validation
-  taxonomy-film  ─┤          (YAML)              ├─ query builder
-  your own       ─┘                              └─ admin UI
+  a domain package ─┐                              ┌─ upload form
+  (none published  ─┼─→  content-type definition ─→┼─ validation
+   yet)             │          (YAML)              ├─ query builder
+  your own         ─┘                              └─ admin UI
 ```
 
 ## Why
@@ -54,9 +54,9 @@ $query->where('week', '12')->get();       // every season's week 12
 composer require marque/taxonomy
 ```
 
-You generally will not install this directly — it arrives as a dependency of whichever
-domain package you picked (`marque/taxonomy-sport`, `marque/taxonomy-tv`,
-`marque/taxonomy-film`).
+The intent is that it arrives as a dependency of a domain package (a sport, TV or film
+taxonomy). No domain package is published yet, so today you install it directly and write
+your own definitions.
 
 ```bash
 php artisan migrate
@@ -151,9 +151,13 @@ identical.
 
 **Additive changes** — a new facet, a new level value — apply on load. No ceremony.
 
-**Destructive changes** — removing a level, dropping a facet — never apply silently. And
-classification data is **never deleted**: rows become unreferenced and recoverable, enforced
-by the schema's foreign keys rather than by politeness.
+**Destructive changes** (removing a level, dropping a facet) are meant to need your
+confirmation, and **today they don't.** The drift report and the confirm-then-apply step
+exist, but nothing calls them on load yet. An edit to your app's YAML that removes a level
+applies as soon as it loads, with no report (#10805). Classification rows are not deleted:
+the foreign key nulls their term instead of cascading. But a classification that loses
+its term loses what it said, so treat a destructive YAML edit as a data change and back up
+first.
 
 **A version bump requires a migration path, or it is refused.** Not warned about — refused.
 The package author is the only person who knows both the old shape and the new one, so
@@ -175,14 +179,16 @@ migrations:
 Declared like that, every existing classification survives the rename. Without the
 declaration a naive loader sees `week` vanish and `round` appear, and orphans the lot.
 
-`composer update` never reshapes a live catalogue. The loader notices and stops:
+The loader doesn't stop on a new version, and it doesn't warn. The notice comes from
+`marque:taxonomy:validate` and the admin screen:
 
 ```
 nfl_game has an update available (v1 → v2). 4000 torrent(s) are classified under it.
 Run `marque:taxonomy:upgrade nfl_game` to review and apply.
 ```
 
-The command reports what changes and how many torrents are affected, then asks. Steps
+Put `marque:taxonomy:validate` in your deploy, after `composer update`. The upgrade command
+reports what changes and how many torrents are affected, then asks. Steps
 available: `add_level`, `remove_level`, `rename_level`, `add_facet`, `remove_facet`.
 
 ### When to ship a new package instead
@@ -196,7 +202,7 @@ should ship a new package, because that forces the admin's consent.
 ## Domain packages
 
 **The `taxonomy-` prefix is convention, not enforcement.** Name a domain package
-`marque/taxonomy-sport`, `marque/taxonomy-tv`, `marque/taxonomy-film` — someone wanting a
+`yourvendor/taxonomy-sport`, `yourvendor/taxonomy-tv`, `yourvendor/taxonomy-film` — someone wanting a
 film tracker should be able to find it by searching for one. The loader does not care what
 your package is called, so a private definition set inside your own app package works fine.
 
@@ -242,8 +248,10 @@ carries.
 
 It offers **no way to create, rename or remove a level.** That is not an oversight: levels
 come from the definition, and an admin who can only add values cannot produce either of the
-failure modes described above. Structural change goes through the commands, which report
-what they will orphan before doing anything.
+failure modes described above. Structural change comes from the definition. A package's
+version bump goes through `marque:taxonomy:upgrade`, which reports what changes and how
+many torrents it touches before it does anything. An edit to your app's own YAML applies on
+load, unreported (see above, #10805).
 
 ### Reaching it
 
@@ -267,7 +275,7 @@ write, rather than trusting whatever middleware the surrounding route happens to
   not necessary, and better placed with other automation.
 - **Per-content-type entity fields.** The grouping key ships; the machinery that would
   derive it from an entity picker does not.
-- **Any domain vocabulary.** Deliberately. That is what `marque/taxonomy-*` is for.
+- **Any domain vocabulary.** Deliberately. That is what domain packages are for.
 
 ## Requirements
 
@@ -280,4 +288,4 @@ four, not merely claimed.
 
 ## Licence
 
-MIT. See [LICENCE](../../LICENSE).
+MIT, as declared in `composer.json`.
